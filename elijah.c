@@ -2,12 +2,17 @@
 #include <stdlib.h>
 #include <pthread.h>
 
-void *fib_thread(void *arg);
+// Functions used
+void *thread_runner(void *arg);
 int fib(int n);
+void main_prompt(int num);
+
+// Global value for all threads to use
 int sum;
 
 int main(int argc, char const *argv[])
 {
+    // Check use part a
     if (argc <= 1)
     {
         printf("USE: .\\elijah [number] \n");
@@ -15,16 +20,18 @@ int main(int argc, char const *argv[])
         exit(0);
     }
 
+    // Conversion to int with [atoi()]
     int fib_num = atoi(argv[1]);
 
-    if (fib_num < 1)
+    // Check use part b
+    if (fib_num < 1 || fib_num > 29)
     {
-        printf("Please use an integer greater than 0.\n");
+        printf("Please use an integer between 0 and 30.\n");
         exit(0);
     }
 
-    printf("Welcome!\n");
-    printf("calculating fib_n = %d\n", fib_num);
+    // prompt after checks
+    main_prompt(fib_num);
 
     // Program starts here:
 
@@ -34,43 +41,43 @@ int main(int argc, char const *argv[])
     // thread identifier
     pthread_attr_t thread_attr;
     pthread_attr_init(&thread_attr);
-    int fib_index;
-    for (fib_index = 0; fib_index < fib_num; fib_index++)
+    int i;
+    for (i = 0; i < fib_num; i++)
     {
         pthread_t thread_id;
         // TODO: correct behaviour of thread
-        if (pthread_create(&thread_id, &thread_attr, fib_thread, &fib_sequence[fib_index]))
-        {
-            // error handling
-            printf("Could not create thread, exiting.\n");
-            exit(0);
-        }
-        else if (pthread_join(thread_id, NULL))
-        {
-            // error handling
-            printf("Could not join thread, exiting.\n");
-            exit(0);
-        }
+        pthread_create(&thread_id, &thread_attr, thread_runner, &fib_sequence[i]);
+        pthread_join(thread_id, NULL);
     }
     printf("done:\t%d\n", sum);
 
     return 0;
 }
 
-// [fib_thread] is used for threaded operations
-void *fib_thread(void *arg)
+void main_prompt(int num)
+{
+    printf("Welcome!\n");
+    printf("calculating fib_n = %d\n", num);
+
+    printf("+-------------------------------+\n");
+    printf("| Calcuating %d with Threading\t|\n", num);
+    printf("+-------------------------------+\n");
+    return;
+}
+
+// [thread_runner] is used for threaded operations
+void *thread_runner(void *arg)
 {
     sum = fib(atoi(arg));
-    printf("sum:\t%d\n", sum);
     pthread_exit(0);
-    // return NULL;
 }
 
 int fib(int x)
 {
     if (x < 2)
     {
-        return 1;
+        return x;
     }
+    // printf("%d ", x);
     return fib(x - 1) + fib(x - 2);
 }
