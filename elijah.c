@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <pthread.h>
 
+// limits on the calculations
 int MAX_FIB_N = 29;
 int MIN_FIB_N = 1;
 
@@ -119,6 +120,7 @@ void start_prompt(int value)
 void *thread_runner(void *arg)
 {
     pthread_exit(0);
+    return;
 }
 
 // a reusable recursive use for calculatin a fibonacci sequence.
