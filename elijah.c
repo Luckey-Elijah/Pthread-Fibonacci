@@ -124,7 +124,7 @@ int check_and_return(int arg_count, const char *arg_value)
     return int_value;
 }
 
-// after running [check_and_return], this is called
+// Just a simple user prompt.
 void start_prompt(int value)
 {
     printf("+---------------------------------------+\n");
@@ -133,7 +133,8 @@ void start_prompt(int value)
     return;
 }
 
-// TODO: [thread_runner]
+// Used for threading. A fibonacci sequence generator on the global
+// arry, fib_seq[].
 void *thread_runner(void *arg)
 {
     int element;
