@@ -25,7 +25,6 @@ make
 .\elijah.exe 10
 ```
 
-
 The `make` basically runs `gcc -g -Wall -pthread -o elijah elijah.c` in the command line. The `-pthread` flag is necessary for *NIX systems to build with consistency with threads. You also will need a `gcc` compiler.
 
 ## Pthread API Use
